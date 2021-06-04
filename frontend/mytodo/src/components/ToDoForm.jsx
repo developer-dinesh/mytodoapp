@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
 import '../App.css';
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
-import {TextField,  Button, Typography } from '@material-ui/core';
+import {TextField,  Button, Grid, Paper } from '@material-ui/core';
 import useForm from './useForm';
 import {connect} from 'react-redux';
 import * as actions from "../actions/ToDo";
@@ -17,9 +16,9 @@ const initialFieldValues = {
 
 const ToDoForm = ({classes, ...props}) => {
     useEffect(() => {
-        if (props.currentId != 0){
+        if (props.currentId !== 0){
             setValues({
-                ...props.ToDoList.find(x => x._id == props.currentId)
+                ...props.ToDoList.find(x => x._id === props.currentId)
             })
             setErrors({})
         }
@@ -32,7 +31,7 @@ const ToDoForm = ({classes, ...props}) => {
         setErrors({
             ...temp
         })
-        return Object.values(temp).every(x => x == "")
+        return Object.values(temp).every(x => x === "")
     }
 
     var {
@@ -45,8 +44,6 @@ const ToDoForm = ({classes, ...props}) => {
     } = useForm(initialFieldValues,props.setCurrentId)
 
      
-     
-    
     const handleSubmit = e => {
         e.preventDefault()
         const onSuccess = () =>{
@@ -60,43 +57,39 @@ const ToDoForm = ({classes, ...props}) => {
             resetForm()
         }
         if (validate()) {
-            if(props.currentId == 0)
+            if(props.currentId === 0)
             props.createToDo(values,onSuccess)
             else
-            props. updateToDo(props.currentId,values,onSuccess)
+            props.updateToDo(props.currentId,values,onSuccess)
         }
     }
 
-     
-
-    const Todo = { marginTop: '100px',marginLeft: '100px',  };
-    const Date = { marginLeft: '0px', width: '50%', align:'center' };
-    const smt = { marginLeft:'70px' }
+    const paperStyle={padding :20,height:'280px',width:300, marginTop:"90px", marginRight:'300px'}
+   
     return (
-        <form autocomplete="off" noValidate onSubmit={handleSubmit}>
-        <div style={Todo}>
+        <Grid align='center'>
+        <Paper elevation={10} style={paperStyle}>
+        <form autocomplete="off" id="myForm" noValidate onSubmit={handleSubmit}>
         <TextField 
         margin="normal"
-        fullwidth
         variant="outlined"
         name="todo"
-        placeholder="To Do"
+        label="To Do"
         value={values.todo}
         onChange={handleInputChange}
         {...(errors.todo && { error: true, helperText: errors.todo })}
         /> 
-        <br /><br /><br />
-        <div style={Date}>     
-        <DatePickerComponent halfwidth name="date" halfwidth variant="outlined" placeholder="Select Date ->" value={values.date} onChange={handleInputChange} error helperText
-         {...(errors.date && { error: true, helperText: errors.date })}   />
+        <br /><br /><br />    
+        <input type="date"   name="date" placeholder="Select Date ->" value={values.date} onChange={handleInputChange} />
          <br /><br /><br />
-         <br /><br />
-        </div> 
-        <Button style={smt} type="submit" color="primary" variant="contained">Submit</Button>
-        </div>
+        <Button  type="submit" size="large" color="primary" variant="contained">Submit</Button>
         </form>
+        </Paper>
+        </Grid>
+        
     );
 }
+ 
 
 
 const mapStateToProps = state => ({
@@ -109,3 +102,7 @@ const mapActionToProps = {
 }
 
 export default connect(mapStateToProps, mapActionToProps)(ToDoForm);
+
+ 
+
+ 

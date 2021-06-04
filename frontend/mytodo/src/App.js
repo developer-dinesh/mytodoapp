@@ -11,10 +11,10 @@ function App() {
   return (
     <Provider store={store}>
       <Container maxwidth="lg">
-        <AppBar position="static" color="inherit">
+        <AppBar fullwidth position="fixed" color="inherit">
           <Typography
             variant="h2"
-            align="center">
+            align="center" style={{fontFamily: "'Akaya Telivigala', cursive", fontSize:'50px'}}>
             mytodo
           </Typography>
         </AppBar>
